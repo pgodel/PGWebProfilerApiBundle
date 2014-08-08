@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="pg_web_profiler_api_homepage" path="/xxx">
+        <default key="_controller">PGWebProfilerApiBundle:WebProfilerApi:index</default>
+    </route>
+    <route id="pg_web_profiler_api_tokens" path="/tokens.{_format}">
+        <default key="_controller">PGWebProfilerApiBundle:WebProfilerApi:getTokens</default>
+    </route>
+    <route id="pg_web_profiler_api_token" path="/tokens/{token}.{_format}">
+        <default key="_controller">PGWebProfilerApiBundle:WebProfilerApi:getToken</default>
+    </route>
+</routes>
