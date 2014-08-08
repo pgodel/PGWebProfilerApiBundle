@@ -16,6 +16,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WebProfilerApiController extends FOSRestController
 {
+    private $profiler;
+
     public function indexAction()
     {
         return $this->render('PGWebProfilerApiBundle:Default:index.html.twig', array());
@@ -42,14 +44,32 @@ class WebProfilerApiController extends FOSRestController
         $start = null == $offset ? 0 : $offset + 1;
         $limit = $paramFetcher->get('limit');
 
+        $this->profiler = $this->get('profiler');
 
-        return array();
+        if (null === $this->profiler) {
+            throw new NotFoundHttpException('The profiler must be enabled.');
+        }
+
+        $this->profiler->disable();
+
+        //$profile = $this->profiler->loadProfile('');
+
+        $ip     = $request->query->get('ip');
+        $method = $request->query->get('method');
+        $url    = $request->query->get('url');
+        $start  = $request->query->get('start', null);
+        $end    = $request->query->get('end', null);
+        $limit  = $request->query->get('limit');
+
+
+        $tokens = $this->profiler->find($ip, $url, $limit, $method, $start, $end);
+        return $tokens;
 
     }
 
     /**
      * Get a token.
-     * 
+     *
      * @Annotations\View(templateVar="token")
      *
      * @param Request $request the request object
